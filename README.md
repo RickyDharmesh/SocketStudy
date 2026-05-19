@@ -58,41 +58,32 @@ Socket programming finds applications in various domains, including web developm
 client.py :
 ```
 import socket
-
-s = socket.socket()
-s.bind(('localhost', 8000))
+from datetime import datetime
+s=socket.socket()
+s.bind(('localhost',8000))
 s.listen(5)
-
-c, addr = s.accept()
-
-while True:
-    i = input("Enter a data: ")
-    c.send(i.encode())
-
-    ack = c.recv(1024).decode()
-
-    if ack:
-        print(ack)
-        continue
-    else:
-        c.close()
-        break
+c,addr=s.accept()
+print("Client Address : ",addr)
+now = datetime.now()
+c.send(now.strftime("%d/%m/%Y %H:%M:%S").encode())
+ack=c.recv(1024).decode()
+if ack:
+    print(ack)
+    c.close()
 ```
 server.py
 ```
-
 import socket
-
-s = socket.socket()
-s.connect(('localhost', 8000))
-
-while True:
-    print(s.recv(1024).decode())
-    s.send("Acknowledgement Recived".encode())
+s=socket.socket()
+s.connect(('localhost',8000))
+print(s.getsockname())
+print(s.recv(1024).decode())
+s.send("acknowledgement recived from the server".encode())
+s.close()
 ```
 
 ## Output:
-<img width="1645" height="366" alt="Screenshot 2026-05-19 102129" src="https://github.com/user-attachments/assets/1642c914-a3c4-441f-aaa8-d6aaefac24ac" />
+<img width="1650" height="356" alt="Screenshot 2026-05-19 131645" src="https://github.com/user-attachments/assets/33a0c2a7-0210-48ee-858e-0a549c175be1" />
 
 ## Result:
 Thus the study of Socket Programming Completed Successfully
